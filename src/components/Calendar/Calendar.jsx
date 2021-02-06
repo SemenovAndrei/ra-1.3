@@ -1,101 +1,111 @@
 import React from 'react'
-import moment from 'moment'
-import 'moment/locale/ru'
+import CalendarLogic from './CalendarLogic'
+// import moment from 'moment'
+// import 'moment/locale/ru'
 import './calendar.css'
 
+const calendarLogic = new CalendarLogic()
+
+/**
+ * Отображает указанную дату в календаре
+ *
+ * @param {date} props - дата
+ */
 export default function Calendar(props) {
-  moment.suppressDeprecationWarnings = true
-  moment.locale('ru')
-  const date = moment(props.date)
+  const date = calendarLogic.getDate(props.date)
 
-  const day = date.format('D')
+  // moment.suppressDeprecationWarnings = true
+  // moment.locale('ru')
+  // const date = moment(props.date)
 
-  const dayFull = date.format('dddd')
+  // const day = date.format('D')
 
-  const month = date.format('MMMM')
+  // const dayFull = date.format('dddd')
 
-  const monthShort = date.format('MM')
+  // const month = date.format('MMMM')
 
-  const monthTransform = date.format('Do MMMM').split(' ')[1]
+  // const monthShort = date.format('MM')
 
-  const year = date.format('YYYY')
+  // const monthTransform = date.format('Do MMMM').split(' ')[1]
 
-  const fullMonth = date.daysInMonth()
+  // const year = date.format('YYYY')
 
-  const result = []
+  // const fullMonth = date.daysInMonth()
 
-  for (let i = 1; i <= fullMonth; i += 1) {
-    result.push([i, 'current'])
-  }
+  // const result = []
 
-  const firstDate = moment(`${year} ${monthShort} ${result[0][0]}`)
+  // for (let i = 1; i <= fullMonth; i += 1) {
+  //   result.push([i, 'current'])
+  // }
 
-  function addPrevDays() {
-    if (firstDate.format('dddd') !== 'понедельник') {
-      const tempDate = firstDate.subtract(1, 'day')
-      const tempDay = tempDate.format('D')
-      result.unshift([Number(tempDay), 'prev'])
-      addPrevDays()
-    }
-  }
+  // const firstDate = moment(`${year} ${monthShort} ${result[0][0]}`)
 
-  const lastDate = moment(`${year} ${monthShort} ${result[result.length - 1][0]}`)
+  // function addPrevDays() {
+  //   if (firstDate.format('dddd') !== 'понедельник') {
+  //     const tempDate = firstDate.subtract(1, 'day')
+  //     const tempDay = tempDate.format('D')
+  //     result.unshift([Number(tempDay), 'prev'])
+  //     addPrevDays()
+  //   }
+  // }
 
-  function addNextDays() {
-    if (lastDate.format('dddd') !== 'воскресенье') {
-      const tempDate = lastDate.add(1, 'day')
-      const tempDay = tempDate.format('D')
-      result.push([Number(tempDay), 'next'])
-      addNextDays()
-    }
-  }
+  // const lastDate = moment(`${year} ${monthShort} ${result[result.length - 1][0]}`)
 
-  addPrevDays()
-  addNextDays()
+  // function addNextDays() {
+  //   if (lastDate.format('dddd') !== 'воскресенье') {
+  //     const tempDate = lastDate.add(1, 'day')
+  //     const tempDay = tempDate.format('D')
+  //     result.push([Number(tempDay), 'next'])
+  //     addNextDays()
+  //   }
+  // }
 
-  const resultHasClasses = []
+  // addPrevDays()
+  // addNextDays()
 
-  function resultGetClasses() {
-    result.forEach(e => {
-      if (e[1] !== 'current') {
-        e[1] = 'ui-datepicker-other-month'
-      }
+  // const resultHasClasses = []
 
-      if (e[0] === Number(day)) {
-        e[1] = 'ui-datepicker-today'
-      }
+  // function resultGetClasses() {
+  //   result.forEach(e => {
+  //     if (e[1] !== 'current') {
+  //       e[1] = 'ui-datepicker-other-month'
+  //     }
 
-      resultHasClasses.push(e)
-    })
-  }
-  resultGetClasses()
+  //     if (e[0] === Number(day)) {
+  //       e[1] = 'ui-datepicker-today'
+  //     }
 
-  function resultToWeek() {
-    const weeks = result.length / 7
+  //     resultHasClasses.push(e)
+  //   })
+  // }
+  // resultGetClasses()
 
-    for (let i = 0; i < weeks; i += 1) {
-      const part = resultHasClasses.splice(0, 7)
-      resultHasClasses.push(part)
-    }
-  }
+  // function resultToWeek() {
+  //   const weeks = result.length / 7
 
-  resultToWeek()
+  //   for (let i = 0; i < weeks; i += 1) {
+  //     const part = resultHasClasses.splice(0, 7)
+  //     resultHasClasses.push(part)
+  //   }
+  // }
+
+  // resultToWeek()
 
   return (
-    <div>
+    <div className="ui-wrapper">
       <div className="ui-datepicker">
         <div className="ui-datepicker-material-header">
-          <div className="ui-datepicker-material-day">{dayFull}</div>
+          <div className="ui-datepicker-material-day">{date.dayFull}</div>
           <div className="ui-datepicker-material-date">
-            <div className="ui-datepicker-material-day-num">{day}</div>
-            <div className="ui-datepicker-material-month">{monthTransform}</div>
-            <div className="ui-datepicker-material-year">{year}</div>
+            <div className="ui-datepicker-material-day-num">{date.day}</div>
+            <div className="ui-datepicker-material-month">{date.monthTransform}</div>
+            <div className="ui-datepicker-material-year">{date.year}</div>
           </div>
           <div className="ui-datepicker-material-header">
             <div className="ui-datepicker-title">
-              <span className="ui-datepicker-material-month">{month}</span>
+              <span className="ui-datepicker-material-month">{date.month}</span>
               &nbsp;
-              <span className="ui-datepicker-material-year">{year}</span>
+              <span className="ui-datepicker-material-year">{date.year}</span>
             </div>
           </div>
         </div>
@@ -135,7 +145,7 @@ export default function Calendar(props) {
             </tr>
           </thead>
           <tbody>
-            {resultHasClasses.map(e => (
+            {date.resultHasClasses.map(e => (
               <tr key={e[0]}>
                 {e.map(el => (
                   <td className={el[1]} key={el[0]}>

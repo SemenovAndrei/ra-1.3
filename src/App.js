@@ -2,7 +2,11 @@ import Calendar from './components/Calendar/Calendar'
 import './App.css'
 
 function App() {
-  const now = new Date(2017, 4, 8)
+  /**
+   * Указанная дата
+   */
+  const now = new Date(2017, 2, 8)
+
   return <Calendar className="calendar" date={now} />
 }
 
